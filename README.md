@@ -37,7 +37,7 @@ If you discover any security related issues, please email :author_email instead 
 
 ## Credits
 
-- [:author_name](https://github.com/:author_username)
+- [Christoph Hochstrasser](https://github.com/CHH)
 - [All Contributors](../../contributors)
 
 ## License
