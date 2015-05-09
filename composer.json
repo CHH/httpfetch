@@ -1,0 +1,43 @@
+{
+    "name": "chh/httpfetch",
+    "description": "A library for simple HTTP requests (using Guzzle Ring)",
+    "keywords": [
+        "http",
+        "httpfetch",
+        "ringphp"
+    ],
+    "homepage": "https://github.com/CHH/httpfetch.git",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Christoph Hochstrasser",
+            "email": "me@christophh.net",
+            "homepage": "https://christophh.net",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php" : ">=5.4.0",
+        "league/url": "~3.3",
+        "guzzlehttp/ringphp": "~1.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit" : "4.*"
+    },
+    "autoload": {
+        "psr-4": {
+            "chh\\httpfetch\\": "src"
+        },
+        "files": ["src/httpfetch.php"]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "chh\\httpfetch\\test\\": "tests"
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0-dev"
+        }
+    }
+}
