@@ -63,14 +63,14 @@ class ExampleTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals("foo:", stream_get_contents($response['body']));
     }
 
-    public function testBasicAuthWithUserOption()
+    public function testBasicAuthWithAuthOption()
     {
-        $response = httpfetch\get('http://localhost:8003/basic-auth.php', ['user' => ['foo', 'bar']]);
+        $response = httpfetch\get('http://localhost:8003/basic-auth.php', ['auth' => ['foo', 'bar']]);
 
         $this->assertEquals(200, $response['status']);
         $this->assertEquals("foo:bar", stream_get_contents($response['body']));
 
-        $response = httpfetch\get('http://localhost:8003/basic-auth.php', ['user' => ['foo', '']]);
+        $response = httpfetch\get('http://localhost:8003/basic-auth.php', ['auth' => ['foo', '']]);
 
         $this->assertEquals(200, $response['status']);
         $this->assertEquals("foo:", stream_get_contents($response['body']));

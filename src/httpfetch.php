@@ -62,7 +62,7 @@ function _default_options(array $options)
  * @param array $options See Guzzle Ring Request
  * @return array Ring Response
  */
-function fetch($url, $options = [])
+function fetch($url, array $options = [])
 {
     $urlComponents = parse_url($url);
     $request = [];
@@ -122,7 +122,7 @@ function fetch($url, $options = [])
  * @param string $url
  * @param array $options Ring Request
  */
-function get($url, $options = [])
+function get($url, array $options = [])
 {
     $options['http_method'] = 'GET';
     return fetch($url, $options);
@@ -134,7 +134,7 @@ function get($url, $options = [])
  * @param string $url
  * @param array $options Ring Request
  */
-function post($url, $options = [])
+function post($url, array $options = [])
 {
     $options['http_method'] = 'POST';
     return fetch($url, $options);
@@ -146,7 +146,7 @@ function post($url, $options = [])
  * @param string $url
  * @param array $options Ring Request
  */
-function put($url, $options = [])
+function put($url, array $options = [])
 {
     $options['http_method'] = 'PUT';
     return fetch($url, $options);
@@ -158,7 +158,7 @@ function put($url, $options = [])
  * @param string $url
  * @param array $options Ring Request
  */
-function delete($url, $options = [])
+function delete($url, array $options = [])
 {
     $options['http_method'] = 'DELETE';
     return fetch($url, $options);
@@ -170,7 +170,7 @@ function delete($url, $options = [])
  * @param string $url
  * @param array $options Ring Request
  */
-function options($url, $options = [])
+function options($url, array $options = [])
 {
     $options['http_method'] = 'OPTIONS';
     return fetch($url, $options);
@@ -182,7 +182,7 @@ function options($url, $options = [])
  * @param string $url
  * @param array $options Ring Request
  */
-function head($url, $options = [])
+function head($url, array $options = [])
 {
     $options['http_method'] = 'HEAD';
     return fetch($url, $options);
