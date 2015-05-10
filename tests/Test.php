@@ -19,6 +19,7 @@ class ExampleTest extends \PHPUnit_Framework_TestCase
             ->getProcess();
 
         $this->server->start();
+        var_dump($this->server->isRunning());
     }
 
     public function tearDown()
