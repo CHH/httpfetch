@@ -32,6 +32,8 @@ class ExampleTest extends \PHPUnit_Framework_TestCase
         httpfetch\set_default_handler($handler);
 
         $this->assertEquals($handler, httpfetch\default_handler());
+
+        httpfetch\set_default_handler(null);
     }
 
     public function testFollowsRedirectByDefault()

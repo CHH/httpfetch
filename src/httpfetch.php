@@ -6,10 +6,9 @@ use GuzzleHttp\Ring\Client;
 use GuzzleHttp\Ring\Core;
 use League\Url\Url;
 
-function set_default_handler(callable $handler)
+function set_default_handler(callable $handler = null)
 {
     global $CHH_HTTP_FETCH_HANDLER;
-
     $CHH_HTTP_FETCH_HANDLER = $handler;
 }
 
@@ -24,7 +23,7 @@ function default_handler()
     global $CHH_HTTP_FETCH_HANDLER;
 
     if (null === $CHH_HTTP_FETCH_HANDLER) {
-        if (extension_loaded('curl')) {
+        if (extension_loaded('curl') && function_exists('curl_reset')) {
             $CHH_HTTP_FETCH_HANDLER = new Client\CurlMultiHandler;
         } else {
             $CHH_HTTP_FETCH_HANDLER = new Client\StreamHandler;
