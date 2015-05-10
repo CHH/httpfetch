@@ -47,6 +47,35 @@ class ExampleTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(301, $response['status']);
     }
 
+    public function testBasicAuth()
+    {
+        $response = httpfetch\get('http://foo:bar@localhost:8003/basic-auth.php');
+
+        $this->assertEquals(200, $response['status']);
+        $this->assertEquals("foo:bar", stream_get_contents($response['body']));
+    }
+
+    public function testBasicAuthWithEmptyPassword()
+    {
+        $response = httpfetch\get('http://foo:@localhost:8003/basic-auth.php');
+
+        $this->assertEquals(200, $response['status']);
+        $this->assertEquals("foo:", stream_get_contents($response['body']));
+    }
+
+    public function testBasicAuthWithUserOption()
+    {
+        $response = httpfetch\get('http://localhost:8003/basic-auth.php', ['user' => ['foo', 'bar']]);
+
+        $this->assertEquals(200, $response['status']);
+        $this->assertEquals("foo:bar", stream_get_contents($response['body']));
+
+        $response = httpfetch\get('http://localhost:8003/basic-auth.php', ['user' => ['foo', '']]);
+
+        $this->assertEquals(200, $response['status']);
+        $this->assertEquals("foo:", stream_get_contents($response['body']));
+    }
+
     public function testHttpGet()
     {
         $response = httpfetch\get('http://localhost:8003/index.php', ['follow_location' => true]);
@@ -90,5 +119,13 @@ class ExampleTest extends \PHPUnit_Framework_TestCase
         $response = httpfetch\options('http://localhost:8003/options.php');
 
         $this->assertEquals(200, $response['status']);
+    }
+
+    function testNonHttpUrl()
+    {
+        $response = fetch('ftp://example.com');
+
+        $this->assertInstanceOf('\Exception', $response['error']);
+        $this->assertEquals('cURL error 1: Protocol "ftp" not supported or disabled in libcurl', $response['error']->getMessage());
     }
 }

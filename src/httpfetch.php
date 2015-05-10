@@ -56,7 +56,7 @@ function _default_options(array $options)
 }
 
 /**
- * Fetches the URL
+ * Fetches the HTTP URL
  *
  * @param string $url
  * @param array $options See Guzzle Ring Request
@@ -77,7 +77,7 @@ function fetch($url, $options = [])
     }
 
     $request = array_merge([
-        'uri' => $urlComponents['path'],
+        'uri' => isset($urlComponents['path']) ? $urlComponents['path'] : '/',
         'scheme' => $urlComponents['scheme'],
     ], $options);
 
@@ -86,18 +86,29 @@ function fetch($url, $options = [])
     }
 
     if (!Core::hasHeader($request, 'host')) {
-        if (in_array($urlComponents['scheme'], ['http', 'https'], true)
-            && empty($urlComponents['port']) || in_array((int) $urlComponents['port'], [80, 443], true)) {
-            $request['headers']['host'] = [$urlComponents['host']];
-        } else {
-            $request['headers']['host'] = [$urlComponents['host'].':'.$urlComponents['port']];
+        $host = $urlComponents['host'];
+
+        if (isset($urlComponents['port'])
+            && $urlComponents['port'] !== 80 && $urlComponents['port'] !== 443) {
+            $host .= ':'.$urlComponents['port'];
         }
+
+        $request['headers']['host'] = [$host];
     }
 
-    if (!Core::hasHeader($request, 'authorization') && isset($urlComponents['user'])) {
-        $request['headers']['authorization'] = [
-            'Basic '.base64_encode($urlComponents['user'].':'.$urlComponents['pass'])
-        ];
+    if (!Core::hasHeader($request, 'authorization')) {
+        if (isset($urlComponents['user'])) {
+            $user = $urlComponents['user'];
+            $password = isset($urlComponents['pass']) ? $urlComponents['pass'] : '';
+        } elseif (isset($options['auth'])) {
+            @list($user, $password) = $options['auth'];
+        }
+
+        if (isset($user) && isset($password)) {
+            $request['headers']['authorization'] = [
+                'Basic '.base64_encode($user.':'.$password)
+            ];
+        }
     }
 
     $response = $handler($request);
