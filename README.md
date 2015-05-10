@@ -24,7 +24,7 @@ $response = fetch("https://www.example.com");
 echo stream_get_contents($response['body']);
 ```
 
-## The "chh\httpfetch" Namespace
+## The chh\httpfetch Namespace
 
 ### fetch($url, array $options = [])
 
