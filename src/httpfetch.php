@@ -6,39 +6,68 @@ use GuzzleHttp\Ring\Client;
 use GuzzleHttp\Ring\Core;
 use League\Url\Url;
 
+function set_default_handler(callable $handler)
+{
+    global $CHH_HTTP_FETCH_HANDLER;
+
+    $CHH_HTTP_FETCH_HANDLER = $handler;
+}
+
 /**
  * Set or get the HTTP handler.
  *
  * @param  callable $handler Guzzle Ring Handler
  * @return callable
  */
-function default_handler(callable $handler = null)
+function default_handler()
 {
-    static $_handler;
+    global $CHH_HTTP_FETCH_HANDLER;
 
-    if (null === $_handler) {
-        if (null !== $handler) {
-            $_handler = $handler;
-        } elseif (extension_loaded('curl')) {
-            $_handler = new Client\CurlMultiHandler;
+    if (null === $CHH_HTTP_FETCH_HANDLER) {
+        if (extension_loaded('curl')) {
+            $CHH_HTTP_FETCH_HANDLER = new Client\CurlMultiHandler;
         } else {
-            $_handler = new Client\StreamHandler;
+            $CHH_HTTP_FETCH_HANDLER = new Client\StreamHandler;
         }
     }
 
-    return $_handler;
+    return $CHH_HTTP_FETCH_HANDLER;
+}
+
+function _default_options(array $options)
+{
+    $options = array_merge([
+        'follow_location' => true,
+        'max_redirects' => 10,
+        'http_method' => 'GET',
+    ], $options);
+
+    if ($options['follow_location']) {
+        $options['client']['curl'][CURLOPT_FOLLOWLOCATION] = true;
+        $options['client']['stream_context']['http']['follow_location'] = 1;
+    }
+    unset($options['follow_location']);
+
+    $options['client']['curl'][CURLOPT_MAXREDIRS] = (int) $options['max_redirects'];
+    $options['client']['stream_context']['http']['max_redirects'] = (int) $options['max_redirects'];
+    unset($options['max_redirects']);
+
+    return $options;
 }
 
 /**
  * Fetches the URL
  *
  * @param string $url
- * @param array $options Ring Request
+ * @param array $options See Guzzle Ring Request
  * @return array Ring Response
  */
 function fetch($url, $options = [])
 {
-    $url = Url::createFromUrl((string) $url);
+    $urlComponents = parse_url($url);
+    $request = [];
+
+    $options = _default_options($options);
 
     if (isset($options['handler'])) {
         $handler = $options['handler'];
@@ -48,25 +77,30 @@ function fetch($url, $options = [])
     }
 
     $request = array_merge([
-        'uri' => (string) $url->getPath(),
-        'query_string' => (string) $url->getQuery(),
-        'scheme' => $url->getScheme(),
-        'http_method' => 'GET',
+        'uri' => $urlComponents['path'],
+        'scheme' => $urlComponents['scheme'],
     ], $options);
 
-    if (!Core::hasHeader($request, 'Host')) {
-        $request['headers']['host'] = [(string) $url->getHost()];
+    if (isset($urlComponents['query'])) {
+        $request['query_string'] = $urlComponents['query'];
     }
 
-    if ($user = $url->getUser()) {
-        $request['headers']['authorization'] = ['Basic '.base64_encode((string) $user.':'.$url->getPass())];
+    if (!Core::hasHeader($request, 'host')) {
+        if (in_array($urlComponents['scheme'], ['http', 'https'], true)
+            && empty($urlComponents['port']) || in_array((int) $urlComponents['port'], [80, 443], true)) {
+            $request['headers']['host'] = [$urlComponents['host']];
+        } else {
+            $request['headers']['host'] = [$urlComponents['host'].':'.$urlComponents['port']];
+        }
+    }
+
+    if (!Core::hasHeader($request, 'authorization') && isset($urlComponents['user'])) {
+        $request['headers']['authorization'] = [
+            'Basic '.base64_encode($urlComponents['user'].':'.$urlComponents['pass'])
+        ];
     }
 
     $response = $handler($request);
-
-    if (in_array($response['status'], [301, 302], true)) {
-        return fetch(Core::firstHeader($response, 'location'), $options);
-    }
 
     return $response;
 }
@@ -125,7 +159,7 @@ function delete($url, $options = [])
  * @param string $url
  * @param array $options Ring Request
  */
-function options($url, $options)
+function options($url, $options = [])
 {
     $options['http_method'] = 'OPTIONS';
     return fetch($url, $options);
@@ -137,7 +171,7 @@ function options($url, $options)
  * @param string $url
  * @param array $options Ring Request
  */
-function head($url, $options)
+function head($url, $options = [])
 {
     $options['http_method'] = 'HEAD';
     return fetch($url, $options);
