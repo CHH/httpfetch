@@ -125,6 +125,5 @@ class ExampleTest extends \PHPUnit_Framework_TestCase
         $response = httpfetch\fetch('ftp://example.com');
 
         $this->assertInstanceOf('\Exception', $response['error']);
-        $this->assertEquals('cURL error 1: Protocol "ftp" not supported or disabled in libcurl', $response['error']->getMessage());
     }
 }
