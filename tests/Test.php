@@ -2,7 +2,6 @@
 
 namespace chh\httpfetch\test;
 
-use function chh\httpfetch\fetch;
 use chh\httpfetch;
 use Symfony\Component\Process\ProcessBuilder;
 
@@ -35,7 +34,7 @@ class ExampleTest extends \PHPUnit_Framework_TestCase
 
     public function testFollowsRedirectByDefault()
     {
-        $response = fetch('http://localhost:8003/redirect.php');
+        $response = httpfetch\fetch('http://localhost:8003/redirect.php');
 
         $this->assertEquals(200, $response['status']);
         $this->assertEquals('Hello World', stream_get_contents($response['body']));
@@ -43,7 +42,7 @@ class ExampleTest extends \PHPUnit_Framework_TestCase
 
     public function testDisableFollowRedirect()
     {
-        $response = fetch('http://localhost:8003/redirect.php', ['follow_location' => false]);
+        $response = httpfetch\fetch('http://localhost:8003/redirect.php', ['follow_location' => false]);
         $this->assertEquals(301, $response['status']);
     }
 
@@ -123,7 +122,7 @@ class ExampleTest extends \PHPUnit_Framework_TestCase
 
     function testNonHttpUrl()
     {
-        $response = fetch('ftp://example.com');
+        $response = httpfetch\fetch('ftp://example.com');
 
         $this->assertInstanceOf('\Exception', $response['error']);
         $this->assertEquals('cURL error 1: Protocol "ftp" not supported or disabled in libcurl', $response['error']->getMessage());
