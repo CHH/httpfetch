@@ -10,6 +10,7 @@ php:
 matrix:
   allow_failures:
     - php: 7.0
+    - php: hhvm
 
 install:
   - php -S localhost:8003 -t tests/web 2>&1 > /dev/null &
