@@ -11,6 +11,9 @@ matrix:
   allow_failures:
     - php: 7.0
 
+install:
+  - php -S localhost:8003 -t tests/web 2>&1 > /dev/null &
+
 before_script:
   - travis_retry composer self-update
   - travis_retry composer install --no-interaction --prefer-source

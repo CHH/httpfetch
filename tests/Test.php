@@ -3,29 +3,9 @@
 namespace chh\httpfetch\test;
 
 use chh\httpfetch;
-use Symfony\Component\Process\ProcessBuilder;
-use Symfony\Component\Process\PhpExecutableFinder;
 
 class ExampleTest extends \PHPUnit_Framework_TestCase
 {
-    private $server;
-
-    public function setUp()
-    {
-        $php = (new PhpExecutableFinder)->find();
-        $cmd = sprintf('%s -S localhost:8003 -t "%s"', $php, __DIR__.'/web');
-        $this->server = (new ProcessBuilder([$cmd]))
-            ->disableOutput()
-            ->getProcess();
-
-        $this->server->start();
-    }
-
-    public function tearDown()
-    {
-        $this->server->stop();
-    }
-
     public function testOverrideDefaultHandler()
     {
         $handler = new \GuzzleHttp\Ring\Client\CurlHandler;
