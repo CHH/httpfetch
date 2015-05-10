@@ -4,6 +4,7 @@ namespace chh\httpfetch\test;
 
 use chh\httpfetch;
 use Symfony\Component\Process\ProcessBuilder;
+use Symfony\Component\Process\PhpExecutableFinder;
 
 class ExampleTest extends \PHPUnit_Framework_TestCase
 {
@@ -11,7 +12,8 @@ class ExampleTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $cmd = sprintf('php -S localhost:8003 -t "%s"', __DIR__.'/web');
+        $php = (new PhpExecutableFinder)->find();
+        $cmd = sprintf('%s -S localhost:8003 -t "%s"', $php, __DIR__.'/web');
         $this->server = (new ProcessBuilder([$cmd]))
             ->disableOutput()
             ->getProcess();
