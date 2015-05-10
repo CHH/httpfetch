@@ -43,12 +43,12 @@ function _default_options(array $options)
 
     if ($options['follow_location']) {
         $options['client']['curl'][CURLOPT_FOLLOWLOCATION] = true;
+        $options['client']['curl'][CURLOPT_MAXREDIRS] = (int) $options['max_redirects'];
+
         $options['client']['stream_context']['http']['follow_location'] = 1;
+        $options['client']['stream_context']['http']['max_redirects'] = (int) $options['max_redirects'];
     }
     unset($options['follow_location']);
-
-    $options['client']['curl'][CURLOPT_MAXREDIRS] = (int) $options['max_redirects'];
-    $options['client']['stream_context']['http']['max_redirects'] = (int) $options['max_redirects'];
     unset($options['max_redirects']);
 
     return $options;
