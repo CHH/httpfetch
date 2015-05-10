@@ -1,5 +1,7 @@
 # httpfetch
 
+[![Build Status](https://travis-ci.org/CHH/httpfetch.svg)](https://travis-ci.org/CHH/httpfetch)
+
 httpfetch provides a simple function `fetch` to make HTTP requests in small scripts easy and fast.
 
 httpfetch relies heavily on [RingPHP](https://github.com/guzzle/RingPHP) for its robust low level HTTP abstraction and for the ability to make asynchronous requests.
