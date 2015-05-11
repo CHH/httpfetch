@@ -75,7 +75,7 @@ $response = httpfetch\post("https://www.example.com", [
 ## Testing
 
 ``` bash
-$ phpunit
+$ make test
 ```
 
 ## Contributing
