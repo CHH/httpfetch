@@ -9,7 +9,7 @@ httpfetch relies heavily on [RingPHP](https://github.com/guzzle/RingPHP) for its
 
 ## Use Cases
 
-* As replacement for `file_get_contents`, but with async support and proper handling of the certificates used in HTTPS.
+* As replacement for `file_get_contents`, but with async support, proper support for all HTTP features, easy passing of request headers, parsing of response headers, and proper handling of the certificates used by HTTPS.
 * `file_get_contents` or cURL are notoriously insecure without proper configuration, which is hard to do. Also see this [secure file_get_contents wrapper](https://github.com/padraic/file_get_contents).
 * Making simple web service clients without depending on Guzzle.
 
