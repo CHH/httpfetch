@@ -1,6 +1,7 @@
 # httpfetch
 
 [![Build Status](https://travis-ci.org/CHH/httpfetch.svg)](https://travis-ci.org/CHH/httpfetch)
+[![Latest Stable Version](https://poser.pugx.org/chh/httpfetch/v/stable)](https://packagist.org/packages/chh/httpfetch)
 
 httpfetch provides a simple function `fetch` to make HTTP requests in small scripts easy and fast.
 
