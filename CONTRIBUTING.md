@@ -25,7 +25,7 @@ We accept contributions via Pull Requests on [Github](https://github.com/CHH/htt
 ## Running Tests
 
 ``` bash
-$ phpunit
+$ make test
 ```
 
 
