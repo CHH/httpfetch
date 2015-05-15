@@ -5,6 +5,11 @@ namespace chh\httpfetch;
 use GuzzleHttp\Ring\Client;
 use GuzzleHttp\Ring\Core;
 
+/**
+ * Sets a new default HTTP handler
+ *
+ * @param callable $handler Guzzle Ring Client Handler
+ */
 function set_default_handler(callable $handler = null)
 {
     global $CHH_HTTP_FETCH_HANDLER;
@@ -12,9 +17,8 @@ function set_default_handler(callable $handler = null)
 }
 
 /**
- * Set or get the HTTP handler.
+ * Returns the current default HTTP handler
  *
- * @param  callable $handler Guzzle Ring Handler
  * @return callable
  */
 function default_handler()
