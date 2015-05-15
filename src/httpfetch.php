@@ -4,7 +4,6 @@ namespace chh\httpfetch;
 
 use GuzzleHttp\Ring\Client;
 use GuzzleHttp\Ring\Core;
-use League\Url\Url;
 
 function set_default_handler(callable $handler = null)
 {
