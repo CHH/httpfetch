@@ -126,7 +126,7 @@ $response = httpfetch\post("https://www.example.com", [
 
 ### set_default_handler(callable $handler)
 
-Overrides the Guzzle Ring Client handler which is used by the `fetch` function. Handlers are callables which follow the [RingPHP specification][]. Reset the handler to the default by passing `null`.
+Overrides the Guzzle Ring Client handler which is used by the `fetch` function. Handlers are callables which follow the [Ring specification][]. Reset the handler to the default by passing `null`.
 
 Example: Force the usage of PHP's http:// stream wrapper:
 
