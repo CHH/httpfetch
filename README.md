@@ -35,6 +35,7 @@ echo stream_get_contents($response['body']);
 
 ### fetch($url, array $options = [])
 
+[ring specification]: http://ringphp.readthedocs.org/en/latest/spec.html
 [ring request]: http://ringphp.readthedocs.org/en/latest/spec.html#requests
 [ring response]: http://ringphp.readthedocs.org/en/latest/spec.html#responses
 
@@ -121,6 +122,18 @@ $response = httpfetch\get("https://www.example.com");
 $response = httpfetch\post("https://www.example.com", [
     'body' => 'foo',
 ]);
+```
+
+### set_default_handler(callable $handler)
+
+Overrides the Guzzle Ring Client handler which is used by the `fetch` function. Handlers are callables which follow the [RingPHP specification][].
+
+Example: Force the usage of PHP's http:// stream wrapper:
+
+```php
+chh\httpfetch\set_default_handler(new Guzzle\Ring\Client\StreamHandler);
+
+fetch('http://example.com');
 ```
 
 ## Testing
