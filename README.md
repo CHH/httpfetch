@@ -48,6 +48,18 @@ httpfetch implements a few additional options for convenience:
 * `max_redirects` (default: `10`): Number of redirects to follow
 * `auth` (default: `null`): Username/password pair as array for Basic Authentication, e.g. `["user", "password"]`
 
+Responses are array-like objects with the following keys:
+
+* `body`: (string, fopen resource, Iterator, GuzzleHttp\Stream\StreamInterface) The body of the response, if present. Can be a string, resource returned from fopen, an Iterator that yields chunks of data, an object that implemented \_\_toString, or a GuzzleHttp\Stream\StreamInterface.
+* `effective_url`: (string) The URL that returned the resulting response.
+* `error`: (\Exception) Contains an exception describing any errors that were encountered during the transfer.
+* `headers`: (Required, array) Associative array of headers. Each key represents the header name. Each value contains an array of strings where each entry of the array is a header line. The headers array MAY be an empty array in the event an error occurred before a response was received.
+* `reason`
+(string) Optional reason phrase. This option should be provided when the reason phrase does not match the typical reason phrase associated with the status code. See RFC 7231 for a list of HTTP reason phrases mapped to status codes.
+* `status`: (Required, integer) The HTTP status code. The status code MAY be set to null in the event an error occurred before a response was received (e.g., a networking error).
+* `transfer_stats`: (array) Provides an associative array of arbitrary transfer statistics if provided by the underlying handler.
+* `version`: (string) HTTP protocol version. Defaults to 1.1.
+
 For example a POST request by using the `http_method` parameter:
 
 ```php
@@ -58,6 +70,39 @@ $response = fetch('http://www.example.com', [
 
 var_dump($response['status']);
 var_dump(stream_get_contents($response['body']));
+```
+
+Example: Doing an async GET request with the Promise API:
+
+```php
+fetch('http://www.example.com')->then(function ($response) {
+  // Save the response stream:
+  $out = fopen('/tmp/foo.txt', 'w+b');
+  stream_copy_to_stream($response['body'], $out);
+  fclose($out);
+});
+```
+
+Example: Doing an async request with the Future API:
+
+```php
+$response = fetch('http://www.example.com');
+
+// Do some other stuff
+
+$response->wait();
+
+echo stream_get_contents($response['body']);
+```
+
+Example: Doing requests in parallel:
+
+```php
+$response1 = fetch('http://www.example.com');
+$response2 = fetch('http://www.foo.com');
+
+echo $response1['status'], "\n";
+echo $response2['status'], "\n";
 ```
 
 ### get(), post(), put(), delete(), head(), options()

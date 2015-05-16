@@ -60,6 +60,7 @@ function _default_options(array $options)
 /**
  * Fetches the HTTP URL
  *
+ * @api
  * @param string $url
  * @param array $options See Guzzle Ring Request
  * @return array Ring Response
@@ -121,6 +122,7 @@ function fetch($url, array $options = [])
 /**
  * Fetches the URL with a HTTP GET request
  *
+ * @api
  * @param string $url
  * @param array $options Ring Request
  */
@@ -133,6 +135,7 @@ function get($url, array $options = [])
 /**
  * Fetches the URL with a HTTP POST request
  *
+ * @api
  * @param string $url
  * @param array $options Ring Request
  */
@@ -145,6 +148,7 @@ function post($url, array $options = [])
 /**
  * Fetches the URL with a HTTP PUT request
  *
+ * @api
  * @param string $url
  * @param array $options Ring Request
  */
@@ -157,6 +161,7 @@ function put($url, array $options = [])
 /**
  * Fetches the URL with a HTTP DELETE request
  *
+ * @api
  * @param string $url
  * @param array $options Ring Request
  */
@@ -169,6 +174,7 @@ function delete($url, array $options = [])
 /**
  * Fetches the URL with a HTTP OPTIONS request
  *
+ * @api
  * @param string $url
  * @param array $options Ring Request
  */
@@ -181,6 +187,7 @@ function options($url, array $options = [])
 /**
  * Fetches the URL with a HTTP HEAD request
  *
+ * @api
  * @param string $url
  * @param array $options Ring Request
  */
